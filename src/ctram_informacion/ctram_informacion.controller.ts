@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CtramInformacionService } from './ctram_informacion.service';
 import { CreateCtramInformacionDto } from './dto/create-ctram_informacion.dto';
 import { UpdateCtramInformacionDto } from './dto/update-ctram_informacion.dto';
-import { CtramTramite } from 'src/ctram_tramite/entities/ctram_tramite.entity';
 
 @Controller('ctram-informacion')
 export class CtramInformacionController {
@@ -19,8 +18,8 @@ export class CtramInformacionController {
   }
 
   @Get(':id')
-  findOne(@Param('id_tram_per') id_tram_per: CtramTramite) {
-    return this.ctramInformacionService.findOne(id_tram_per);
+  findOne(@Param('id_info') id_info: string) {
+    return this.ctramInformacionService.findOne(id_info);
   }
 
   @Patch(':id')
@@ -31,5 +30,10 @@ export class CtramInformacionController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ctramInformacionService.remove(id);
+  }
+
+  @Get('/InfoTramite/:id_tramite')
+  findInfoTramite(@Param('id_tramite') id_tramite: string){
+    return this.ctramInformacionService.findByTramite(id_tramite);
   }
 }

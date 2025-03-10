@@ -31,4 +31,9 @@ export class CtramLinksController {
   remove(@Param('id') id: string) {
     return this.ctramLinksService.remove(id);
   }
+
+  @Get('/NombreFormato/:name')
+  findByName(@Param('name') name: string) {
+    return this.ctramLinksService.findByName(name);
+  }
 }

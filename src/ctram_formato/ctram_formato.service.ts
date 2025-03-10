@@ -8,7 +8,10 @@ import { CtramRequisito } from 'src/ctram_requisito/entities/ctram_requisito.ent
 
 @Injectable()
 export class CtramFormatoService {
-  constructor(@InjectRepository(CtramFormato) private ctramFormatoRepository: Repository<CtramFormato>) {
+  constructor(
+    @InjectRepository(CtramFormato) private ctramFormatoRepository: Repository<CtramFormato>,
+    @InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>,
+  ) {
     console.log('Servicios Cargados');
   }
 
@@ -26,8 +29,8 @@ export class CtramFormatoService {
     return this.ctramFormatoRepository.find();
   }
 
-  async findOne(id_requisito_pert: CtramRequisito) {
-    const ctramFormato = await this.ctramFormatoRepository.findOne({where: {id_requisito_pert: id_requisito_pert}});
+  async findOne(id_formato: string) {
+    const ctramFormato = await this.ctramFormatoRepository.findOne({where: {id_formato: id_formato}});
     if (!ctramFormato) {
       return {message: 'No se encontró el formato'};
     }
@@ -59,5 +62,17 @@ export class CtramFormatoService {
       console.log(error);
       return error;
     }
+  }
+
+  async findByRequisito(id_requisito: string) {
+    const ctramRequisito = await this.ctramRequisitoRepository.findOne({where: {id_requisito: id_requisito}});
+    if (!ctramRequisito) {
+      return {message: 'No se encontró el requisito'};
+    }
+    const ctramFormato = await this.ctramFormatoRepository.findOne({where: {id_requisito_pert: ctramRequisito}});
+    if (!ctramFormato) {
+      return {message: 'No se encontró el formato'};
+    }
+    return ctramFormato;
   }
 }

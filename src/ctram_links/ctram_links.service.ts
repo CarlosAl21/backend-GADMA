@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCtramLinkDto } from './dto/create-ctram_link.dto';
 import { UpdateCtramLinkDto } from './dto/update-ctram_link.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { CtramLink } from './entities/ctram_link.entity';
 
 @Injectable()
@@ -25,9 +25,9 @@ export class CtramLinksService {
     return this.ctramLinkRepository.find();
   }
 
-  async findOne(name: string) {
+  async findOne(id: string) {
     try {
-      return await this.ctramLinkRepository.findOne({ where: { nombre_formato: name } });
+      return await this.ctramLinkRepository.findOne({ where: { id_link: id } });
     } catch (error) {
       const message = 'Error en el servicio findOne de Links';
       console.error(message, error);
@@ -57,6 +57,15 @@ export class CtramLinksService {
       return await this.ctramLinkRepository.remove(ctramLink);
     } catch (error) {
       const message = 'Error en el servicio remove de Links';
+      console.error(message);
+    }
+  }
+
+  async findByName(name: string) {
+    try {
+      return await this.ctramLinkRepository.find({ where: { nombre_formato: Like(`%${name}%`) } });
+    } catch (error) {
+      const message = 'Error en el servicio findByName de Links';
       console.error(message);
     }
   }

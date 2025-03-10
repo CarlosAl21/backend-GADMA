@@ -19,8 +19,8 @@ export class CtramFormatoController {
   }
 
   @Get(':id')
-  findOne(@Param('id_req_per') id_req_per: CtramRequisito) {
-    return this.ctramFormatoService.findOne(id_req_per);
+  findOne(@Param('id_formato') id_formato: string) {
+    return this.ctramFormatoService.findOne(id_formato);
   }
 
   @Patch(':id')
@@ -31,5 +31,10 @@ export class CtramFormatoController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ctramFormatoService.remove(id);
+  }
+
+  @Get('/formatoRequisito/:id_requisito')
+  findByRequisito(@Param('id_requisito') id_requisito: string) {
+    return this.ctramFormatoService.findByRequisito(id_requisito);
   }
 }
