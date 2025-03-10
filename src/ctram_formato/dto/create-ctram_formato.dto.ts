@@ -5,10 +5,6 @@ import { CtramRequisito } from "src/ctram_requisito/entities/ctram_requisito.ent
 export class CreateCtramFormatoDto {
     @IsString()
     @IsNotEmpty()
-    id_formato: string;
-
-    @IsString()
-    @IsNotEmpty()
     id_requisito_pert: CtramRequisito;
 
     @IsString()

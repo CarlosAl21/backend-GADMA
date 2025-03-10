@@ -2,13 +2,11 @@ import { IsNotEmpty, IsString } from "class-validator";
 import { CtramDireccion } from "src/ctram_direccion/entities/ctram_direccion.entity";
 import { CtramInformacion } from "src/ctram_informacion/entities/ctram_informacion.entity";
 import { CtramRequisito } from "src/ctram_requisito/entities/ctram_requisito.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_TRAMITE')
 export class CtramTramite {
-    @PrimaryColumn()
-    @IsString()
-    @IsNotEmpty()
+    @PrimaryGeneratedColumn('uuid')
     id_tramite: string;
     
     @ManyToOne(() => CtramDireccion, direccion => direccion.tramites)

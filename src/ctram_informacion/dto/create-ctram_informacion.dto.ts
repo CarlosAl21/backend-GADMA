@@ -3,10 +3,6 @@ import { CtramTramite } from "src/ctram_tramite/entities/ctram_tramite.entity";
 import { DeepPartial } from "typeorm";
 
 export class CreateCtramInformacionDto {
-    @IsString()
-    @IsNotEmpty()
-    id_informacion: string;
-
     @IsNotEmpty()
     id_tramite_pert: DeepPartial<CtramTramite[]>;
 

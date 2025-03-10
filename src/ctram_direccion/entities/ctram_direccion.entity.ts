@@ -3,8 +3,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_DIRECCION')
 export class CtramDireccion {
-    @PrimaryGeneratedColumn()
-    id_dir: number;
+    @PrimaryGeneratedColumn('uuid')
+    id_dir: string;
 
     @Column()
     nombre: string;

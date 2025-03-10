@@ -1,13 +1,11 @@
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { CtramLink } from "src/ctram_links/entities/ctram_link.entity";
 import { CtramRequisito } from "src/ctram_requisito/entities/ctram_requisito.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_FORMATO')
 export class CtramFormato {
-    @PrimaryColumn()
-    @IsString()
-    @IsNotEmpty()
+    @PrimaryGeneratedColumn('uuid')
     id_formato: string;
 
     @ManyToOne(() => CtramRequisito, requisito => requisito.formatos)

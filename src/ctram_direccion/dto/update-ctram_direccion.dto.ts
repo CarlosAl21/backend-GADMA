@@ -1,8 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateCtramDireccionDto } from './create-ctram_direccion.dto';
-import { IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class UpdateCtramDireccionDto extends PartialType(CreateCtramDireccionDto) {
-    @IsNumber()
-    id_dir: number;
+    @IsString()
+    @IsNotEmpty()
+    id_dir: string;
 }

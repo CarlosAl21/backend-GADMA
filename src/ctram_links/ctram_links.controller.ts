@@ -24,11 +24,11 @@ export class CtramLinksController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCtramLinkDto: UpdateCtramLinkDto) {
-    return this.ctramLinksService.update(+id, updateCtramLinkDto);
+    return this.ctramLinksService.update(id, updateCtramLinkDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ctramLinksService.remove(+id);
+    return this.ctramLinksService.remove(id);
   }
 }

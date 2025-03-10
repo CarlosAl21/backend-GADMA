@@ -1,12 +1,10 @@
 import { IsArray, IsNotEmpty } from "class-validator";
 import { CtramTramite } from "src/ctram_tramite/entities/ctram_tramite.entity";
-import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_INFORMACION')
 export class CtramInformacion {
-    @PrimaryColumn()
-    @IsArray()
-    @IsNotEmpty()
+    @PrimaryGeneratedColumn('uuid')
     id_informacion: string;
 
     @ManyToMany(() => CtramTramite, tramite => tramite.informacion)

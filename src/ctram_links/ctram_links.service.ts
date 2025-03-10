@@ -34,7 +34,7 @@ export class CtramLinksService {
     }
   }
 
-  async update(id: number, updateCtramLinkDto: UpdateCtramLinkDto) {
+  async update(id: string, updateCtramLinkDto: UpdateCtramLinkDto) {
     try {
       const ctramLink = await this.ctramLinkRepository.findOne({ where: { id_link: id } });
       if (!ctramLink) {
@@ -48,7 +48,7 @@ export class CtramLinksService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try {
       const ctramLink = await this.ctramLinkRepository.findOne({ where: { id_link: id } });
       if (!ctramLink) {

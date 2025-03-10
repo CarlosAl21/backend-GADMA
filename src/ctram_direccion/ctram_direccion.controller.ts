@@ -24,11 +24,11 @@ export class CtramDireccionController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCtramDireccionDto: UpdateCtramDireccionDto) {
-    return this.ctramDireccionService.update(+id, updateCtramDireccionDto);
+    return this.ctramDireccionService.update(id, updateCtramDireccionDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.ctramDireccionService.remove(+id);
+    return this.ctramDireccionService.remove(id);
   }
 }

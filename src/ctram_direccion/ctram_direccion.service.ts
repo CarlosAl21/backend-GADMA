@@ -34,7 +34,7 @@ export class CtramDireccionService {
     return {error: 'Error', mensaje: 'No se encontro el registro'};
   }
 
-  async update(id: number, updateCtramDireccionDto: UpdateCtramDireccionDto) {
+  async update(id: string, updateCtramDireccionDto: UpdateCtramDireccionDto) {
     try {
       const datos = await this.ctramDireccionRepository.findOne({where: {id_dir: id}});
       if (datos) {
@@ -48,7 +48,7 @@ export class CtramDireccionService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     try {
       const datos = await this.ctramDireccionRepository.findOne({where: {id_dir: id}});
       if (datos) {

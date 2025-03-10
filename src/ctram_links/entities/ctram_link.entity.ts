@@ -4,8 +4,8 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_LINK')
 export class CtramLink {
-    @PrimaryGeneratedColumn()
-    id_link: number;
+    @PrimaryGeneratedColumn('uuid')
+    id_link: string;
 
     @Column({length: 1000})
     @IsString()
