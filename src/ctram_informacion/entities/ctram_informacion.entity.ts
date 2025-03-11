@@ -7,7 +7,7 @@ export class CtramInformacion {
     @PrimaryGeneratedColumn('uuid')
     id_informacion: string;
 
-    @ManyToOne(() => CtramTramite, tramite => tramite.informacion)
+    @ManyToOne(() => CtramTramite, tramite => tramite.informacion, {nullable: false})
     @IsNotEmpty()
     @JoinColumn({name: 'id_tramite'})
     id_tramite_pert: CtramTramite;

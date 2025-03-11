@@ -1,19 +1,19 @@
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { CtramLink } from "src/ctram_links/entities/ctram_link.entity";
 import { CtramRequisito } from "src/ctram_requisito/entities/ctram_requisito.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_FORMATO')
 export class CtramFormato {
     @PrimaryGeneratedColumn('uuid')
     id_formato: string;
 
-    @ManyToOne(() => CtramRequisito, requisito => requisito.formatos)
+    @ManyToOne(() => CtramRequisito, requisito => requisito.formatos, {nullable: false})
     @IsNotEmpty()
     @JoinColumn({ name: 'id_requisito_pert' })
     id_requisito_pert: CtramRequisito;
 
-    @ManyToOne(() => CtramLink, link => link.formatos)
+    @ManyToOne(() => CtramLink, link => link.formatos, {nullable: false})
     @JoinColumn({ name: 'id_link_pert' })
     id_link_pert: CtramLink;
 
