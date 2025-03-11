@@ -10,7 +10,7 @@ export class RolesGuard extends AuthGuard('jwt') implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    const user = request.user; // 🔹 Asegúrate de que el usuario se extrae correctamente
+    const user = request.user;
 
     if (!user || !user.rol) {
       return false;
