@@ -12,7 +12,7 @@ export class CtramRequisito {
     @JoinColumn({ name: 'id_tramite_pert' })
     id_tramite_pert: CtramTramite;
 
-    @Column()
+    @Column({length: 1000})
     @IsString()
     @IsNotEmpty()
     descripcion: string;

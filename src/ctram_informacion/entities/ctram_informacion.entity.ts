@@ -11,7 +11,7 @@ export class CtramInformacion {
     @JoinColumn({name: 'id_tramite'})
     id_tramite_pert: CtramTramite[];
 
-    @Column()
+    @Column({length: 1000})
     @IsArray()
     @IsNotEmpty()
     descripcion: string;
@@ -21,7 +21,7 @@ export class CtramInformacion {
     @IsNotEmpty()
     tipo: string;
 
-    @Column()
+    @Column({length: 1000})
     @IsArray()
     @IsNotEmpty()
     razon: string;
