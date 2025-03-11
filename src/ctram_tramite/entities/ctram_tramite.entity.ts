@@ -10,8 +10,9 @@ export class CtramTramite {
     id_tramite: string;
     
     @ManyToOne(() => CtramDireccion, direccion => direccion.tramites)
+    @IsNotEmpty()
     @JoinColumn({name: 'id_direccion'})
-    id_direccion_pert: CtramDireccion[];
+    id_direccion_pert: CtramDireccion;
 
     @Column()
     @IsString()

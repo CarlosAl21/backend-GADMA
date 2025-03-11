@@ -3,8 +3,9 @@ import { CtramDireccion } from "src/ctram_direccion/entities/ctram_direccion.ent
 import { DeepPartial } from "typeorm";
 
 export class CreateCtramTramiteDto {
+    @IsString()
     @IsNotEmpty()
-    id_direccion_pert: DeepPartial<CtramDireccion[]>;
+    id_direccion_pert: DeepPartial<CtramDireccion>;
     
     @IsString()
     @IsNotEmpty()

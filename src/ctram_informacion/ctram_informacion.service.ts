@@ -17,6 +17,12 @@ export class CtramInformacionService {
 
   async create(createCtramInformacionDto: CreateCtramInformacionDto) {
     try {
+      const tramite = await this.ctramTramiteRepository.findOne({where: {id_tramite: createCtramInformacionDto.id_tramite_pert as unknown as string}});
+      if(!tramite){
+        return 'No se encontraron resultados';
+      }
+      createCtramInformacionDto.id_tramite_pert = tramite;
+
       const nuevo = this.ctramInformacionRepository.create(createCtramInformacionDto);
       return await this.ctramInformacionRepository.save(nuevo);
     } catch (error) {

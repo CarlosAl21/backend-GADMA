@@ -6,6 +6,7 @@ import { DeepPartial } from "typeorm";
 export class CreateCtramRequisitoDto {
 
     @IsNotEmpty()
+    @IsString()
     id_tramite_pert: DeepPartial<CtramTramite>;
 
     @IsString()

@@ -9,6 +9,7 @@ export class CtramRequisito {
     id_requisito: string;
 
     @ManyToOne(() => CtramTramite, tramite => tramite.requisitos)
+    @IsNotEmpty()
     @JoinColumn({ name: 'id_tramite_pert' })
     id_tramite_pert: CtramTramite;
 
@@ -26,6 +27,7 @@ export class CtramRequisito {
     requisitos: CtramRequisito[];
 
     @ManyToOne(() => CtramRequisito, requisito => requisito.requisitos)
+    @IsNotEmpty()
     @JoinColumn({ name: 'id_requisito_pert' })
     id_requisito_pert: CtramRequisito;
 

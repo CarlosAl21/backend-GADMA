@@ -9,7 +9,8 @@ export class CtramFormato {
     id_formato: string;
 
     @ManyToOne(() => CtramRequisito, requisito => requisito.formatos)
-    @JoinColumn({ name: 'id_formato_pert' })
+    @IsNotEmpty()
+    @JoinColumn({ name: 'id_requisito_pert' })
     id_requisito_pert: CtramRequisito;
 
     @ManyToOne(() => CtramLink, link => link.formatos)

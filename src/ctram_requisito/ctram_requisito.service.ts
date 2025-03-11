@@ -8,12 +8,29 @@ import { CtramTramite } from 'src/ctram_tramite/entities/ctram_tramite.entity';
 
 @Injectable()
 export class CtramRequisitoService {
-  constructor(@InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>) {
+  constructor(
+    @InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>,
+    @InjectRepository(CtramTramite) private ctramTramiteRepository: Repository<CtramTramite>
+  ) {
     console.log('Servicios Cargados');
   }
 
   async create(createCtramRequisitoDto: CreateCtramRequisitoDto) {
     try {
+      const tramite = await this.ctramTramiteRepository.findOne({where: {id_tramite: createCtramRequisitoDto.id_tramite_pert as unknown as string}});
+      if(!tramite) {
+        return 'No se encontro el tramite';
+      }
+      createCtramRequisitoDto.id_tramite_pert = tramite;
+
+      if(createCtramRequisitoDto.id_requisito_pert != null) {
+      const requisito = await this.ctramRequisitoRepository.findOne({where: {id_requisito: createCtramRequisitoDto.id_requisito_pert as unknown as string}});
+      if(!requisito) {
+        return 'No se encontro el requisito';
+      }
+      createCtramRequisitoDto.id_requisito_pert = requisito;
+    }
+
       const nuevo = this.ctramRequisitoRepository.create(createCtramRequisitoDto);
       return await this.ctramRequisitoRepository.save(nuevo);
     } catch (error) {

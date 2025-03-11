@@ -4,7 +4,8 @@ import { DeepPartial } from "typeorm";
 
 export class CreateCtramInformacionDto {
     @IsNotEmpty()
-    id_tramite_pert: DeepPartial<CtramTramite[]>;
+    @IsString()
+    id_tramite_pert: DeepPartial<CtramTramite>;
 
     @IsString()
     @IsNotEmpty()

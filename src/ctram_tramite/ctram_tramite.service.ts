@@ -19,6 +19,12 @@ export class CtramTramiteService {
 
   async create(createCtramTramiteDto: CreateCtramTramiteDto) {
     try {
+      const ctramDireccion = await this.ctramDireccionRepository.findOne({where: {id_dir: createCtramTramiteDto.id_direccion_pert as unknown as string}});
+      if (!ctramDireccion) {
+        return 'No se encontro la direccion';
+      }
+      createCtramTramiteDto.id_direccion_pert = ctramDireccion;
+
       const ctramTramite = this.ctramTramiteRepository.create(createCtramTramiteDto);
       return await this.ctramTramiteRepository.save(ctramTramite);
     } catch (error) {
