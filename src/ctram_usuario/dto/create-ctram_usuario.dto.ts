@@ -19,6 +19,6 @@ export class CreateCtramUsuarioDto {
     
     @IsString()
     @IsNotEmpty()
-    contrasena: string;
+    password: string;
 
 }

@@ -22,7 +22,7 @@ export class CtramUsuario {
 
     @Column()
     @IsString()
-    contrasena: string;
+    password: string;
 
     @Column()
     @IsString()
@@ -31,7 +31,7 @@ export class CtramUsuario {
     @BeforeInsert()
     async hashPassword() {
         const saltRounds = 10;
-        this.contrasena = await bcrypt.hash(this.contrasena, saltRounds);
+        this.password = await bcrypt.hash(this.password, saltRounds);
     }
 
     @BeforeInsert()

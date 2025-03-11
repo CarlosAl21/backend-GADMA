@@ -17,10 +17,11 @@ import { CtramRequisito } from './ctram_requisito/entities/ctram_requisito.entit
 import { CtramTramite } from './ctram_tramite/entities/ctram_tramite.entity';
 import { CtramUsuario } from './ctram_usuario/entities/ctram_usuario.entity';
 import { CtramLink } from './ctram_links/entities/ctram_link.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -28,6 +29,7 @@ import { CtramLink } from './ctram_links/entities/ctram_link.entity';
       username: 'root',
       password: '',
       database: 'tramites',
+      autoLoadEntities: true,
       entities: [
         CtramDireccion,
         CtramUsuario,
@@ -46,6 +48,7 @@ import { CtramLink } from './ctram_links/entities/ctram_link.entity';
     CtramLinksModule,
     CtramInformacionModule,
     CtramUsuarioModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

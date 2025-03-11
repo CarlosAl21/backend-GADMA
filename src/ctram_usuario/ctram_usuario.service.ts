@@ -65,23 +65,12 @@ export class CtramUsuarioService {
     }
   }
 
-  async validatePassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
-    return await bcrypt.compare(plainPassword, hashedPassword);
+  async validateUser(username: string, pass: string): Promise<CtramUsuario | null> {
+    const user = await this.ctramUsuarioRepository.findOne({where: {cedula: username} });
+    if (user && (await bcrypt.compare(pass, user.password))) {
+      return user;
+    }
+    return null;
   }
 
-  async logIn(cedula: string, password: string) {
-    try {
-      const ctramUsuario = await this.ctramUsuarioRepository.findOne({where: {cedula: cedula} });
-      if (!ctramUsuario) {
-        return { error: 'No se encontro el usuario'}
-      }
-      if (ctramUsuario && await  this.validatePassword(password, ctramUsuario.contrasena)) {
-        console.log("¡Contraseña correcta! ✅");
-    } else {
-        console.log("Contraseña incorrecta ❌");
-    }
-    } catch (error) {
-      
-    }
-  }
 }
