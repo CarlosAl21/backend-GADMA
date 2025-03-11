@@ -12,6 +12,7 @@ export class CtramTramiteService {
   constructor(
     @InjectRepository(CtramTramite) private ctramTramiteRepository: Repository<CtramTramite>,
     @InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>,
+    @InjectRepository(CtramDireccion) private ctramDireccionRepository: Repository<CtramDireccion>,
 ) {
     console.log('Servicios Cargados');
   }
@@ -69,6 +70,18 @@ export class CtramTramiteService {
 
   async findTramiteByName(nombre: string) {
     const ctramTramite = await this.ctramTramiteRepository.find({where: {nombre_tramite: Like(`%${nombre}%`)}});
+    if (!ctramTramite) {
+      return 'No se encontro el tramite';
+    }
+    return ctramTramite;
+  }
+
+  async findTramiteByDireccion(id_dir: string) {
+    const ctramDireccion = await this.ctramDireccionRepository.findOne({where: {id_dir: id_dir}});
+    if (!ctramDireccion) {
+      return 'No se encontro la direccion';
+    }
+    const ctramTramite = await this.ctramTramiteRepository.find({where: {id_direccion_pert: ctramDireccion}});
     if (!ctramTramite) {
       return 'No se encontro el tramite';
     }

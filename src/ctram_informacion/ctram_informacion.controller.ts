@@ -1,13 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { CtramInformacionService } from './ctram_informacion.service';
 import { CreateCtramInformacionDto } from './dto/create-ctram_informacion.dto';
 import { UpdateCtramInformacionDto } from './dto/update-ctram_informacion.dto';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('ctram-informacion')
 export class CtramInformacionController {
   constructor(private readonly ctramInformacionService: CtramInformacionService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard, RolesGuard)
   create(@Body() createCtramInformacionDto: CreateCtramInformacionDto) {
     return this.ctramInformacionService.create(createCtramInformacionDto);
   }
@@ -23,11 +26,13 @@ export class CtramInformacionController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   update(@Param('id') id: string, @Body() updateCtramInformacionDto: UpdateCtramInformacionDto) {
     return this.ctramInformacionService.update(id, updateCtramInformacionDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   remove(@Param('id') id: string) {
     return this.ctramInformacionService.remove(id);
   }
