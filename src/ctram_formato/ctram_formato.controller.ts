@@ -12,7 +12,7 @@ export class CtramFormatoController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createCtramFormatoDto: CreateCtramFormatoDto) {
+  create(@Body() createCtramFormatoDto: CreateCtramFormatoDto | CreateCtramFormatoDto[]) {
     return this.ctramFormatoService.create(createCtramFormatoDto);
   }
 

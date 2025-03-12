@@ -17,18 +17,29 @@ export class CtramTramiteService {
     console.log('Servicios Cargados');
   }
 
-  async create(createCtramTramiteDto: CreateCtramTramiteDto) {
+  async create(createCtramTramiteDto: CreateCtramTramiteDto | CreateCtramTramiteDto[]) {
     try {
-      const ctramDireccion = await this.ctramDireccionRepository.findOne({where: {id_dir: createCtramTramiteDto.id_direccion_pert as unknown as string}});
-      if (!ctramDireccion) {
-        return 'No se encontro la direccion';
+      // Si no es un array, lo convertimos en un array
+      const tramitesArray = Array.isArray(createCtramTramiteDto) ? createCtramTramiteDto : [createCtramTramiteDto];
+  
+      const tramites: CtramTramite[] = [];
+      for (const dto of tramitesArray) {
+        const ctramDireccion = await this.ctramDireccionRepository.findOne({
+          where: { id_dir: dto.id_direccion_pert as unknown as string }
+        });
+  
+        if (!ctramDireccion) {
+          return `No se encontró la dirección para el ID: ${dto.id_direccion_pert}`;
+        }
+  
+        dto.id_direccion_pert = ctramDireccion;
+        const tramite = this.ctramTramiteRepository.create(dto);
+        tramites.push(tramite);
       }
-      createCtramTramiteDto.id_direccion_pert = ctramDireccion;
-
-      const ctramTramite = this.ctramTramiteRepository.create(createCtramTramiteDto);
-      return await this.ctramTramiteRepository.save(ctramTramite);
+  
+      return await this.ctramTramiteRepository.save(tramites);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return error;
     }
   }

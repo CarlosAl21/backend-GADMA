@@ -17,23 +17,42 @@ export class CtramFormatoService {
     console.log('Servicios Cargados');
   }
 
-  async create(createCtramFormatoDto: CreateCtramFormatoDto) {
+  async create(createCtramFormatoDto: CreateCtramFormatoDto | CreateCtramFormatoDto[]) {
     try {
-      const ctramRequisito = await this.ctramRequisitoRepository.findOne({where: {id_requisito: createCtramFormatoDto.id_requisito_pert as unknown as string}});
-      if (!ctramRequisito) {
-        return {message: 'No se encontró el requisito'};
+      // Convertir un solo objeto en array si es necesario
+      const formatosArray = Array.isArray(createCtramFormatoDto) ? createCtramFormatoDto : [createCtramFormatoDto];
+  
+      const formatosGuardados: CtramFormato[] = [];
+      for (const dto of formatosArray) {
+        // Buscar el requisito asociado
+        const ctramRequisito = await this.ctramRequisitoRepository.findOne({
+          where: { id_requisito: dto.id_requisito_pert as unknown as string }
+        });
+  
+        if (!ctramRequisito) {
+          return { message: `No se encontró el requisito con ID: ${dto.id_requisito_pert}` };
+        }
+        dto.id_requisito_pert = ctramRequisito;
+  
+        // Buscar el link asociado
+        const ctramLink = await this.ctramLinkRepository.findOne({
+          where: { id_link: dto.id_link_pert as unknown as string }
+        });
+  
+        if (!ctramLink) {
+          return { message: `No se encontró el link con ID: ${dto.id_link_pert}` };
+        }
+        dto.id_link_pert = ctramLink;
+  
+        // Crear el formato y agregarlo a la lista
+        const nuevoFormato = this.ctramFormatoRepository.create(dto);
+        formatosGuardados.push(nuevoFormato);
       }
-      createCtramFormatoDto.id_requisito_pert = ctramRequisito;
-
-      const ctramLink = await this.ctramLinkRepository.findOne({where: {id_link: createCtramFormatoDto.id_link_pert as unknown as string}});
-      if (!ctramLink) {
-        return {message: 'No se encontró el link'};
-      }
-      createCtramFormatoDto.id_link_pert = ctramLink;
-      const ctramFormato = this.ctramFormatoRepository.create(createCtramFormatoDto);
-      return await this.ctramFormatoRepository.save(ctramFormato);
+  
+      // Guardar todos los formatos en la base de datos
+      return await this.ctramFormatoRepository.save(formatosGuardados);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return error;
     }
   }

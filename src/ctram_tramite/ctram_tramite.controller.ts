@@ -11,7 +11,7 @@ export class CtramTramiteController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createCtramTramiteDto: CreateCtramTramiteDto) {
+  create(@Body() createCtramTramiteDto: CreateCtramTramiteDto | CreateCtramTramiteDto[]) {
     return this.ctramTramiteService.create(createCtramTramiteDto);
   }
 

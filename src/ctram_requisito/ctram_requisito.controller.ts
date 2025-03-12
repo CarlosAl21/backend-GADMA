@@ -12,7 +12,7 @@ export class CtramRequisitoController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createCtramRequisitoDto: CreateCtramRequisitoDto) {
+  create(@Body() createCtramRequisitoDto: CreateCtramRequisitoDto | CreateCtramRequisitoDto[]) {
     return this.ctramRequisitoService.create(createCtramRequisitoDto);
   }
 

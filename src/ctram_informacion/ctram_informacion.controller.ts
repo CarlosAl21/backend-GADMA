@@ -11,7 +11,7 @@ export class CtramInformacionController {
 
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
-  create(@Body() createCtramInformacionDto: CreateCtramInformacionDto) {
+  create(@Body() createCtramInformacionDto: CreateCtramInformacionDto | CreateCtramInformacionDto[]) {
     return this.ctramInformacionService.create(createCtramInformacionDto);
   }
 

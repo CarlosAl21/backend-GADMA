@@ -15,26 +15,44 @@ export class CtramRequisitoService {
     console.log('Servicios Cargados');
   }
 
-  async create(createCtramRequisitoDto: CreateCtramRequisitoDto) {
+  async create(createCtramRequisitoDto: CreateCtramRequisitoDto | CreateCtramRequisitoDto[]) {
     try {
-      const tramite = await this.ctramTramiteRepository.findOne({where: {id_tramite: createCtramRequisitoDto.id_tramite_pert as unknown as string}});
-      if(!tramite) {
-        return 'No se encontro el tramite';
+      // Convertir un solo objeto en array si es necesario
+      const requisitosArray = Array.isArray(createCtramRequisitoDto) ? createCtramRequisitoDto : [createCtramRequisitoDto];
+  
+      const requisitos: CtramRequisito[] = [];
+      for (const dto of requisitosArray) {
+        // Buscar el trámite asociado
+        const tramite = await this.ctramTramiteRepository.findOne({
+          where: { id_tramite: dto.id_tramite_pert as unknown as string }
+        });
+  
+        if (!tramite) {
+          return `No se encontró el trámite para el ID: ${dto.id_tramite_pert}`;
+        }
+        dto.id_tramite_pert = tramite;
+  
+        // Buscar el requisito asociado (si existe)
+        if (dto.id_requisito_pert != null) {
+          const requisito = await this.ctramRequisitoRepository.findOne({
+            where: { id_requisito: dto.id_requisito_pert as unknown as string }
+          });
+  
+          if (!requisito) {
+            return `No se encontró el requisito para el ID: ${dto.id_requisito_pert}`;
+          }
+          dto.id_requisito_pert = requisito;
+        }
+  
+        // Crear el objeto y agregarlo a la lista
+        const nuevoRequisito = this.ctramRequisitoRepository.create(dto);
+        requisitos.push(nuevoRequisito);
       }
-      createCtramRequisitoDto.id_tramite_pert = tramite;
-
-      if(createCtramRequisitoDto.id_requisito_pert != null) {
-      const requisito = await this.ctramRequisitoRepository.findOne({where: {id_requisito: createCtramRequisitoDto.id_requisito_pert as unknown as string}});
-      if(!requisito) {
-        return 'No se encontro el requisito';
-      }
-      createCtramRequisitoDto.id_requisito_pert = requisito;
-    }
-
-      const nuevo = this.ctramRequisitoRepository.create(createCtramRequisitoDto);
-      return await this.ctramRequisitoRepository.save(nuevo);
+  
+      // Guardar todos los requisitos en la base de datos
+      return await this.ctramRequisitoRepository.save(requisitos);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return error;
     }
   }

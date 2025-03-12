@@ -15,19 +15,33 @@ export class CtramInformacionService {
     console.log('Servicios Cargados');
   }
 
-  async create(createCtramInformacionDto: CreateCtramInformacionDto) {
+  async create(createCtramInformacionDto: CreateCtramInformacionDto | CreateCtramInformacionDto[]) {
     try {
-      const tramite = await this.ctramTramiteRepository.findOne({where: {id_tramite: createCtramInformacionDto.id_tramite_pert as unknown as string}});
-      if(!tramite){
-        return 'No se encontraron resultados';
+      // Convertir un solo objeto en array si es necesario
+      const informacionArray = Array.isArray(createCtramInformacionDto) ? createCtramInformacionDto : [createCtramInformacionDto];
+  
+      const informacionGuardada: CtramInformacion[] = [];
+      for (const dto of informacionArray) {
+        // Buscar el trámite asociado
+        const tramite = await this.ctramTramiteRepository.findOne({
+          where: { id_tramite: dto.id_tramite_pert as unknown as string }
+        });
+  
+        if (!tramite) {
+          return `No se encontraron resultados para el trámite con ID: ${dto.id_tramite_pert}`;
+        }
+        dto.id_tramite_pert = tramite;
+  
+        // Crear la información y agregarla a la lista
+        const nuevaInformacion = this.ctramInformacionRepository.create(dto);
+        informacionGuardada.push(nuevaInformacion);
       }
-      createCtramInformacionDto.id_tramite_pert = tramite;
-
-      const nuevo = this.ctramInformacionRepository.create(createCtramInformacionDto);
-      return await this.ctramInformacionRepository.save(nuevo);
+  
+      // Guardar todas las informaciones en la base de datos
+      return await this.ctramInformacionRepository.save(informacionGuardada);
     } catch (error) {
       console.error(error);
-      return error; 
+      return error;
     }
   }
 
