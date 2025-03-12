@@ -23,12 +23,12 @@ import { AuthModule } from './auth/auth.module';
   imports: [
     ConfigModule.forRoot({isGlobal: true}),
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'tramites',
+      type: process.env.DB_TYPE as any,
+      host: process.env.DB_HOST,
+      port: +(process.env.DB_PORT || 3306),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_DATABASE,
       autoLoadEntities: true,
       entities: [
         CtramDireccion,
