@@ -5,5 +5,5 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class UpdateCtramUsuarioDto extends PartialType(CreateCtramUsuarioDto) {
     @IsString()
     @IsNotEmpty()
-    cedula: string;
+    cedula_ruc: string;
 }

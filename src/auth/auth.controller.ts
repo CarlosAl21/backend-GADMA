@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request,UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CtramUsuarioService } from 'src/ctram_usuario/ctram_usuario.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -11,13 +11,13 @@ export class AuthController {
   ) {}
 
   @Post('register')
-  async register(@Body() body: { cedula: string; nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
+  async register(@Body() body: { cedula_ruc: string; correo: string;nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
     return this.userService.create(body);
   }
 
   @Post('login')
-  async login(@Body() body: { cedula: string; password: string }) {
-    const user = await this.authService.validateUser(body.cedula, body.password);
+  async login(@Body() body: { cedula_ruc: string; password: string }) {
+    const user = await this.authService.validateUser(body.cedula_ruc, body.password);
     if(!user){
       return { error: 'Usuario o contraseña incorrectos'}
     }

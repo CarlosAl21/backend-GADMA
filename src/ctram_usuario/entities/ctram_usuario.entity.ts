@@ -1,4 +1,4 @@
-import { IsDate, IsString } from "class-validator";
+import { IsDate, IsEmail, IsString } from "class-validator";
 import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 
@@ -6,7 +6,11 @@ import * as bcrypt from 'bcrypt';
 export class CtramUsuario {
     @PrimaryColumn()
     @IsString()
-    cedula: string;
+    cedula_ruc: string;
+
+    @Column()
+    @IsEmail({}, {message: 'Correo inválido'})
+    correo: string;
 
     @Column()
     @IsString()

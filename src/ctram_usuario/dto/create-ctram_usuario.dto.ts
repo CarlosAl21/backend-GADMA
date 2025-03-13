@@ -1,9 +1,13 @@
-import { IsDate, IsNotEmpty, IsString } from "class-validator";
+import { IsDate, IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCtramUsuarioDto {
     @IsString()
     @IsNotEmpty()
-    cedula: string;
+    cedula_ruc: string;
+
+    @IsEmail({}, {message: 'Correo inválido'})
+    @IsNotEmpty()
+    correo: string;
 
     @IsString()
     @IsNotEmpty()
