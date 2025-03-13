@@ -32,18 +32,6 @@ export class CtramRequisitoService {
         }
         dto.id_tramite_pert = tramite;
   
-        // Buscar el requisito asociado (si existe)
-        if (dto.id_requisito_pert != null) {
-          const requisito = await this.ctramRequisitoRepository.findOne({
-            where: { id_requisito: dto.id_requisito_pert as unknown as string }
-          });
-  
-          if (!requisito) {
-            return `No se encontró el requisito para el ID: ${dto.id_requisito_pert}`;
-          }
-          dto.id_requisito_pert = requisito;
-        }
-  
         // Crear el objeto y agregarlo a la lista
         const nuevoRequisito = this.ctramRequisitoRepository.create(dto);
         requisitos.push(nuevoRequisito);

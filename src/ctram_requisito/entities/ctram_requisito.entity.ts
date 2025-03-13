@@ -23,13 +23,6 @@ export class CtramRequisito {
     @IsNotEmpty()
     formato: string;
 
-    @OneToMany(() => CtramRequisito, requisito => requisito.id_requisito_pert)
-    requisitos: CtramRequisito[];
-
-    @ManyToOne(() => CtramRequisito, requisito => requisito.requisitos)
-    @JoinColumn({ name: 'id_requisito_pert' })
-    id_requisito_pert: CtramRequisito;
-
     @OneToMany(() => CtramFormato, formato => formato.id_requisito_pert)
     formatos: CtramFormato[];
 }

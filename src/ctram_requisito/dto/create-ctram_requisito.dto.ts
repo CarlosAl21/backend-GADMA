@@ -1,6 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import { CtramTramite } from "src/ctram_tramite/entities/ctram_tramite.entity";
-import { CtramRequisito } from "../entities/ctram_requisito.entity";
 import { DeepPartial } from "typeorm";
 
 export class CreateCtramRequisitoDto {
@@ -16,9 +15,6 @@ export class CreateCtramRequisitoDto {
     @IsString()
     @IsNotEmpty()
     formato: string;
-
-    @IsOptional()
-    id_requisito_pert?: DeepPartial<CtramRequisito>;
 
 
 }
