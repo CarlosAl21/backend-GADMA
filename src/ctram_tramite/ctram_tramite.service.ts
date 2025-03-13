@@ -45,7 +45,7 @@ export class CtramTramiteService {
   }
 
   findAll() {
-    return this.ctramTramiteRepository.find();
+    return this.ctramTramiteRepository.find({relations: ['id_direccion_pert']});
   }
 
   async findOne(id_tramite: string) {

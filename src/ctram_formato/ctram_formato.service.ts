@@ -58,7 +58,7 @@ export class CtramFormatoService {
   }
 
   findAll() {
-    return this.ctramFormatoRepository.find();
+    return this.ctramFormatoRepository.find({relations: ['id_requisito_pert', 'id_link_pert']});
   }
 
   async findOne(id_formato: string) {

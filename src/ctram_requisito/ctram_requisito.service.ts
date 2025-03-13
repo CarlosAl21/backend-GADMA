@@ -46,7 +46,7 @@ export class CtramRequisitoService {
   }
 
   findAll() {
-    return this.ctramRequisitoRepository.find();
+    return this.ctramRequisitoRepository.find({relations: ['id_tramite_pert']});
   }
 
   async findOne(id_requisito: string) {
