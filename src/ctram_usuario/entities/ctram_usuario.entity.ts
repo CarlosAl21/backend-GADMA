@@ -40,6 +40,6 @@ export class CtramUsuario {
 
     @BeforeInsert()
     assignDefaultRole() {
-        this.rol = "usuario"; // Siempre asigna "usuario" antes de insertar
+        this.rol = "admin"; // Siempre asigna "usuario" antes de insertar
     }
 }

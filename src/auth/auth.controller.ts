@@ -2,6 +2,7 @@ import { Body, Controller, Post, UseGuards, Request,UsePipes, ValidationPipe } f
 import { AuthService } from './auth.service';
 import { CtramUsuarioService } from 'src/ctram_usuario/ctram_usuario.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { RolesGuard } from './roles.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -11,6 +12,7 @@ export class AuthController {
   ) {}
 
   @Post('register')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   async register(@Body() body: { cedula_ruc: string; correo: string;nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
     return this.userService.create(body);
   }
