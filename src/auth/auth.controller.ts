@@ -1,10 +1,12 @@
-import { Body, Controller, Post, UseGuards, Request,UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CtramUsuarioService } from 'src/ctram_usuario/ctram_usuario.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './roles.guard';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('Autenticacion')
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
@@ -13,23 +15,57 @@ export class AuthController {
 
   @Post('register')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  async register(@Body() body: { cedula_ruc: string; correo: string;nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Registrar un nuevo usuario' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        cedula_ruc: { type: 'string' },
+        correo: { type: 'string' },
+        nombre: { type: 'string' },
+        apellido: { type: 'string' },
+        fecha_nacimiento: { type: 'string', format: 'date' },
+        password: { type: 'string' }
+      },
+      required: ['cedula_ruc', 'correo', 'nombre', 'apellido', 'fecha_nacimiento', 'password']
+    }
+  })
+  @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado.' })
+  async register(@Body() body: { cedula_ruc: string; correo: string; nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
     return this.userService.create(body);
   }
 
   @Post('login')
+  @ApiOperation({ summary: 'Autenticar usuario' })
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        cedula_ruc: { type: 'string' },
+        password: { type: 'string' }
+      },
+      required: ['cedula_ruc', 'password']
+    }
+  })
+  @ApiResponse({ status: 200, description: 'Autenticación exitosa.' })
+  @ApiResponse({ status: 401, description: 'Credenciales inválidas.' })
   async login(@Body() body: { cedula_ruc: string; password: string }) {
     const user = await this.authService.validateUser(body.cedula_ruc, body.password);
-    if(!user){
-      return { error: 'Usuario o contraseña incorrectos'}
+    if (!user) {
+      return { error: 'Usuario o contraseña incorrectos' };
     }
     return this.authService.login(user);
   }
 
   @Post('profile')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener perfil del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Perfil del usuario retornado correctamente.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   getProfile(@Request() req) {
     return req.user;
   }
-
 }

@@ -6,12 +6,16 @@ import { Like, Repository } from 'typeorm';
 import { CtramTramite } from './entities/ctram_tramite.entity';
 import { CtramDireccion } from 'src/ctram_direccion/entities/ctram_direccion.entity';
 import { CtramRequisito } from 'src/ctram_requisito/entities/ctram_requisito.entity';
+import { CtramInformacion } from 'src/ctram_informacion/entities/ctram_informacion.entity';
+import { CtramFormato } from 'src/ctram_formato/entities/ctram_formato.entity';
 
 @Injectable()
 export class CtramTramiteService {
   constructor(
     @InjectRepository(CtramTramite) private ctramTramiteRepository: Repository<CtramTramite>,
     @InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>,
+    @InjectRepository(CtramInformacion) private ctramInformacionRepository: Repository<CtramInformacion>,
+    @InjectRepository(CtramFormato) private ctramFormatoRepository: Repository<CtramFormato>,
     @InjectRepository(CtramDireccion) private ctramDireccionRepository: Repository<CtramDireccion>,
 ) {
     console.log('Servicios Cargados');
@@ -78,6 +82,27 @@ export class CtramTramiteService {
       if (!ctramTramite) {
         return 'No se encontro el tramite';
       }
+
+      const ctramRequisitos = await this.ctramRequisitoRepository.find({where: {id_tramite_pert: ctramTramite}});
+      if (ctramRequisitos.length > 0) {
+        for (const requisito of ctramRequisitos) {
+          const ctramFormatos = await this.ctramFormatoRepository.find({where: {id_requisito_pert: requisito}});
+          if (ctramFormatos.length > 0) {
+            for (const formato of ctramFormatos) {
+              await this.ctramFormatoRepository.remove(formato);
+            }
+          }
+          await this.ctramRequisitoRepository.remove(requisito);
+        }
+      }
+
+      const ctramInformaciones = await this.ctramInformacionRepository.find({where: {id_tramite_pert: ctramTramite}});
+      if (ctramInformaciones.length > 0) {
+        for (const informacion of ctramInformaciones) {
+          await this.ctramInformacionRepository.remove(informacion);
+        }
+      }
+
       return await this.ctramTramiteRepository.remove(ctramTramite);
     } catch (error) {
       console.log(error);

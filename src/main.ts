@@ -13,7 +13,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Tramites API')
-    .setDescription('Documentacion de la API de Tramites del GADMA')
+    .setDescription('Documentacion de la API de Tramites del GADMA\n\nDesarrollado por Carlos Alvarado\n\n**NOTA: Para poder realizar peticiones a la API, es necesario estar autenticado.**')
     .setVersion('1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
