@@ -1,7 +1,7 @@
 import { IsDate, IsNotEmpty, IsString } from "class-validator";
 import { CtramLink } from "src/ctram_links/entities/ctram_link.entity";
 import { CtramRequisito } from "src/ctram_requisito/entities/ctram_requisito.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('CTRAM_FORMATO')
 export class CtramFormato {
@@ -33,5 +33,10 @@ export class CtramFormato {
     @Column()
     @IsString()
     justificacion: string;
+
+    @BeforeInsert()
+    async estadoDefault() {
+        this.estado = 'ACTIVO';
+    }
 
 }

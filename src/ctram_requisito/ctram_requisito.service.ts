@@ -84,4 +84,7 @@ export class CtramRequisitoService {
     }
   }
   
+  async findByFormato(){
+    
+  }
 }
