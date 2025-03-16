@@ -5,12 +5,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CtramRequisito } from './entities/ctram_requisito.entity';
 import { Repository } from 'typeorm';
 import { CtramTramite } from 'src/ctram_tramite/entities/ctram_tramite.entity';
+import { CtramFormato } from 'src/ctram_formato/entities/ctram_formato.entity';
 
 @Injectable()
 export class CtramRequisitoService {
   constructor(
     @InjectRepository(CtramRequisito) private ctramRequisitoRepository: Repository<CtramRequisito>,
-    @InjectRepository(CtramTramite) private ctramTramiteRepository: Repository<CtramTramite>
+    @InjectRepository(CtramTramite) private ctramTramiteRepository: Repository<CtramTramite>,
+    @InjectRepository(CtramFormato) private ctramFormatoRepository: Repository<CtramFormato>,
   ) {
     console.log('Servicios Cargados');
   }
@@ -77,14 +79,16 @@ export class CtramRequisitoService {
       if(!respuesta) {
         return 'No se encontro el registro';
       }
-      return await this.ctramRequisitoRepository.remove
+      const formato = await this.ctramFormatoRepository.find({where:{id_requisito_pert: respuesta}});
+      if(formato.length > 0) {
+        await this.ctramFormatoRepository.remove(formato);
+      }
+
+      return await this.ctramRequisitoRepository.remove(respuesta);
     } catch (error) {
-      console.log(error);
-      return
+      console.error('Error al eliminar el requisito:', error);
+      return { message: 'Error al eliminar el requisito', error };
     }
   }
-  
-  async findByFormato(){
-    
-  }
+
 }
