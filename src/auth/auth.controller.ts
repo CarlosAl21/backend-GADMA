@@ -59,8 +59,19 @@ export class AuthController {
     return this.authService.login(user);
   }
 
+  @Post('logout')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Cerrar sesión del usuario autenticado' })
+  @ApiResponse({ status: 200, description: 'Sesión cerrada correctamente.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async logout(@Request() req) {
+    await this.authService.logout(req.user.cedula_ruc, req.headers.authorization.split(' ')[1]);
+    return { message: 'Sesión cerrada correctamente' };
+  }
+
   @Post('profile')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener perfil del usuario autenticado' })
   @ApiResponse({ status: 200, description: 'Perfil del usuario retornado correctamente.' })

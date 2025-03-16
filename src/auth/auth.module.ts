@@ -7,9 +7,11 @@ import { JwtStrategy } from './jwt.strategy';
 import { CtramUsuarioModule } from 'src/ctram_usuario/ctram_usuario.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtAuthGuard } from './jwt-auth.guard';
+import { CtramUsuario } from 'src/ctram_usuario/entities/ctram_usuario.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports: [
+  imports: [TypeOrmModule.forFeature([CtramUsuario]),
     ConfigModule,
     CtramUsuarioModule,
     PassportModule,
