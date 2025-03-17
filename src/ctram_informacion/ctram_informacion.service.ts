@@ -69,6 +69,7 @@ export class CtramInformacionService {
         return 'No se encontraron resultados';
       }
       this.ctramInformacionRepository.merge(info, updateCtramInformacionDto);
+      return await this.ctramInformacionRepository.save(info);
     } catch (error) {
       console.error(error);
       return error;
