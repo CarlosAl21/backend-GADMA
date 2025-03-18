@@ -4,6 +4,7 @@ import { CtramUsuarioService } from 'src/ctram_usuario/ctram_usuario.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { RolesGuard } from './roles.guard';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody, ApiBearerAuth } from '@nestjs/swagger';
+import { CtramDireccion } from 'src/ctram_direccion/entities/ctram_direccion.entity';
 
 @Controller('auth')
 @ApiTags('Autenticacion')
@@ -33,7 +34,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado.' })
-  async register(@Body() body: { cedula_ruc: string; correo: string; nombre: string; apellido: string; fecha_nacimiento: Date; password: string }) {
+  async register(@Body() body: { cedula_ruc: string; correo: string; nombre: string; apellido: string; fecha_nacimiento: Date; password: string, id_direccion_pert: CtramDireccion }) {
     return this.userService.create(body);
   }
 

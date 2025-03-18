@@ -1,5 +1,7 @@
 import { IsDate, IsEmail, IsNotEmpty, IsString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger"; // Importar para documentación de Swagger
+import { DeepPartial } from "typeorm";
+import { CtramDireccion } from "src/ctram_direccion/entities/ctram_direccion.entity";
 
 export class CreateCtramUsuarioDto {
   
@@ -56,4 +58,12 @@ export class CreateCtramUsuarioDto {
     @IsString()
     @IsNotEmpty()
     password: string;
+
+    @ApiProperty({
+        description: 'ID de la dirección de pertenencia del usuario',
+        type: CtramDireccion,
+        example: { id_direccion_pert: 1 },
+    })
+    @IsNotEmpty()
+    id_direccion_pert: DeepPartial<CtramDireccion>;
 }
