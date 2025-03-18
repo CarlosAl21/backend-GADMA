@@ -5,12 +5,15 @@ import { UpdateCtramUsuarioDto } from './dto/update-ctram_usuario.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CtramUsuario } from './entities/ctram_usuario.entity';
+import { CtramDireccion } from 'src/ctram_direccion/entities/ctram_direccion.entity';
 
 @Injectable()
 export class CtramUsuarioService {
   constructor(
     @InjectRepository(CtramUsuario)
     private ctramUsuarioRepository: Repository<CtramUsuario>,
+    @InjectRepository(CtramDireccion)
+    private ctramDireccionRepository: Repository<CtramDireccion>,
   ) {
     console.log('Servicios Cargados');
   }
@@ -77,6 +80,12 @@ export class CtramUsuarioService {
       if (!correo || !this.validarEmail(correo)) {
         return { error: 'Debe ingresar un correo electrónico válido' };
       }
+
+      const direccion = await this.ctramDireccionRepository.findOne({where: {id_dir: String(CreateCtramUsuarioDto.id_direccion_pert)}});
+      if (!direccion) {
+        return { error: 'La dirección de pertenencia no existe' };
+      }
+      CreateCtramUsuarioDto.id_direccion_pert = direccion;
       // Crear y guardar el usuario si todo es correcto
       const ctramUsuario = this.ctramUsuarioRepository.create(
         CreateCtramUsuarioDto,
