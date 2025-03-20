@@ -1,7 +1,8 @@
 import { IsDate, IsEmail, IsString } from "class-validator";
-import { BeforeInsert, Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import * as bcrypt from 'bcrypt';
 import { CtramDireccion } from "src/ctram_direccion/entities/ctram_direccion.entity";
+import { join } from "path";
 
 @Entity('CTRAM_USUARIO')
 export class CtramUsuario {
@@ -34,6 +35,7 @@ export class CtramUsuario {
     rol: string;
 
     @ManyToOne(() => CtramDireccion, direccion => direccion.usuarios)
+    @JoinColumn({name: 'id_direccion_pert'})
     id_direccion_pert: CtramDireccion;
 
     @BeforeInsert()
