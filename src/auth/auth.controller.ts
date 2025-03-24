@@ -27,9 +27,10 @@ export class AuthController {
         nombre: { type: 'string' },
         apellido: { type: 'string' },
         fecha_nacimiento: { type: 'string', format: 'date' },
-        password: { type: 'string' }
+        password: { type: 'string' },
+        id_direccion_pert: { type: 'object' }
       },
-      required: ['cedula_ruc', 'correo', 'nombre', 'apellido', 'fecha_nacimiento', 'password']
+      required: ['cedula_ruc', 'correo', 'nombre', 'apellido', 'fecha_nacimiento', 'password', 'id_direccion_pert']
     }
   })
   @ApiResponse({ status: 201, description: 'Usuario registrado exitosamente.' })

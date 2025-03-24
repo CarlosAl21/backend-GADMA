@@ -98,13 +98,14 @@ export class CtramUsuarioService {
   }
 
   findAll() {
-    return this.ctramUsuarioRepository.find();
+    return this.ctramUsuarioRepository.find({relations: ['id_direccion_pert'],});
   }
 
   async findOne(id: string) {
     try {
       const ctramUsuario = await this.ctramUsuarioRepository.findOne({
         where: { cedula_ruc: id },
+        relations: ['id_direccion_pert'],
       });
       if (!ctramUsuario) {
         return { error: 'No se encontro el usuario' };
@@ -152,7 +153,7 @@ export class CtramUsuarioService {
     pass: string,
   ): Promise<CtramUsuario | null> {
     const user = await this.ctramUsuarioRepository.findOne({
-      where: { cedula_ruc: username },
+      where: { cedula_ruc: username },relations: ['id_direccion_pert'],
     });
     if (user && (await bcrypt.compare(pass, user.password))) {
       return user;
