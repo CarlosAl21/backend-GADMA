@@ -26,74 +26,96 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
+ # backend-GADMA
 
-```bash
-$ npm install
-```
+ ## Descripción
 
-## Compile and run the project
+ Backend de gestión de trámites (proyecto `backend-GADMA`) construido con NestJS y TypeScript. Provee API REST para manejar usuarios, trámites, formatos, requisitos, enlaces e información relacionada. Está diseñado para integrarse con bases de datos MySQL u Oracle y usar autenticación JWT.
 
-```bash
-# development
-$ npm run start
+ ## Estructura de carpetas (resumen)
 
-# watch mode
-$ npm run start:dev
+ Raíz del proyecto (resumido):
 
-# production mode
-$ npm run start:prod
-```
+ - `src/` - Código fuente de la aplicación
+   - `auth/` - Autenticación (controladores, servicios, guardas, estrategia JWT)
+   - `ctram_direccion/`, `ctram_formato/`, `ctram_informacion/`, `ctram_links/`, `ctram_requisito/`, `ctram_tramite/`, `ctram_usuario/` - Módulos por entidad (controladores, servicios, DTOs y entidades)
+   - `app.module.ts`, `main.ts`, `app.controller.ts`, `app.service.ts` - Entrada y configuración principal
+ - `test/` - Pruebas end-to-end
+ - `package.json`, `tsconfig.json`, `nest-cli.json` - Configuración del proyecto
 
-## Run tests
+ Puedes explorar la estructura completa en el repositorio; la ubicación principal del trabajo es `src/`.
 
-```bash
-# unit tests
-$ npm run test
+ ## Requisitos previos
 
-# e2e tests
-$ npm run test:e2e
+ - Node.js >= 18
+ - npm (v8+)
+ - Base de datos (opcional durante desarrollo): MySQL o Oracle según configuración en `ormconfig`/variables de entorno
 
-# test coverage
-$ npm run test:cov
-```
+ ## Instalación
 
-## Deployment
+ 1. Clona el repositorio:
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+ ```powershell
+ git clone <url-del-repo>
+ cd backend-GADMA
+ ```
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+ 2. Instala dependencias:
 
-```bash
-$ npm install -g mau
-$ mau deploy
-```
+ ```powershell
+ npm install
+ ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+ 3. Configura variables de entorno (ej. conexión a la base de datos, JWT_SECRET). Puedes crear un `.env` en la raíz con las variables necesarias (ver `@nestjs/config` en el código).
 
-## Resources
+ ## Dependencias principales
 
-Check out a few resources that may come in handy when working with NestJS:
+ Las dependencias relevantes del proyecto (ver `package.json` para la lista completa):
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+ - `@nestjs/core`, `@nestjs/common`, `@nestjs/platform-express` - Framework NestJS
+ - `@nestjs/typeorm`, `typeorm` - ORM
+ - `mysql2`, `oracledb` - Drivers de base de datos (elige según tu BD)
+ - `@nestjs/jwt`, `passport`, `passport-jwt` - Autenticación JWT
+ - `class-validator`, `class-transformer` - Validaciones y transformaciones DTO
+ - `bcrypt`/`bcryptjs` - Hashing de contraseñas
 
-## Support
+ Dependencias de desarrollo:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+ - `typescript`, `ts-node`, `jest`, `ts-jest` - TypeScript y pruebas
+ - `eslint`, `prettier` - Linter y formateo
 
-## Stay in touch
+ Para la lista completa y versiones exactas, revisa `package.json`.
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+ ## Scripts y ejecución
 
-## License
+ Comandos disponibles (definidos en `package.json`):
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+ - `npm run start` - Ejecuta la aplicación (Nest) en modo producción/desarrollo según configuración
+ - `npm run start:dev` - Ejecuta en modo desarrollo con `--watch`
+ - `npm run build` - Compila TypeScript a `dist/`
+ - `npm run start:prod` - Ejecuta el contenido de `dist/` con `node dist/main`
+ - `npm run test` - Ejecuta pruebas unitarias con Jest
+ - `npm run test:e2e` - Ejecuta pruebas end-to-end
+ - `npm run test:cov` - Ejecuta tests y genera cobertura
+
+ Ejemplo: ejecutar en desarrollo
+
+ ```powershell
+ npm install
+ npm run start:dev
+ ```
+
+ ## Notas de configuración
+
+ - Asegúrate de definir las variables de entorno para la conexión a la base de datos (`DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`, `DB_TYPE`) y `JWT_SECRET` antes de iniciar la aplicación.
+ - El proyecto usa `TypeORM`; revisa los archivos dentro de `src/*` para ver cómo se carga la configuración.
+
+ ## Contribuciones
+
+ Si quieres contribuir, crea una rama, añade tests cuando corresponda y abre un pull request describiendo los cambios.
+
+ ---
+
+ ## About (para GitHub)
+
+ Backend-GADMA: API REST construida con NestJS y TypeScript para la gestión de trámites municipales. Soporta autenticación JWT, persistencia con TypeORM y adaptadores para MySQL u Oracle.
